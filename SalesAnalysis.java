@@ -1,35 +1,29 @@
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * SalesAnalysis class processes sales data from a file for a month (4 weeks).
- * It calculates weekly totals, average daily sales, total monthly sales,
- * average weekly sales, and identifies the weeks with the highest and lowest sales.
+ * SalesAnalysis class processes sales data for a month (4 weeks).
+ * Calculates weekly totals, average daily sales, total monthly sales,
+ * average weekly sales, and identifies the weeks with highest/lowest sales.
  * 
- * @author Ellie Russo
- * @version 1.0
- * @since 11/16/2025
+ * Author: Ellie Russo
+ * Version: 1.0
+ * Since: 11/22/2025
  */
 public class SalesAnalysis {
 
-    // Array to store total sales for each week
-    private double[] weeklyNumber;
-
-    // Input file path containing sales data
-    private String inputFile;
-
-    // Tracks which week is being processed
-    private int lineNumber = 0;
-
-    // Number of weeks in a month (constant) 
+    // Number of weeks in a month
     public static final int WEEKS_IN_MONTH = 4;
 
+    // Fields
+    private double[] weeklyNumber;
+    private String inputFile;
+    private int lineNumber = 0;
+
     /**
-     * Constructor for SalesAnalysis.
-     * Initializes the input file and weekly sales array.
-     * 
-     * @param inputFile The path to the sales data file
+     * Constructor
+     * @param inputFile path to the sales data file
      */
     public SalesAnalysis(String inputFile) {
         this.inputFile = inputFile;
@@ -37,39 +31,30 @@ public class SalesAnalysis {
     }
 
     /**
-     * Reads the sales data file line by line.
-     * Splits each line by commas and passes the array to setArrayElement().
-     * Handles FileNotFoundException if the file does not exist.
+     * Processes the sales data file
+     * @throws IOException if file cannot be read
      */
-    public void processFile() {
-        try {
-            File file = new File(inputFile);
-            Scanner sc = new Scanner(file);
+    public void processFile() throws IOException {
+        File file = new File(inputFile);
+        Scanner sc = new Scanner(file);
 
-            while (sc.hasNextLine() && lineNumber < WEEKS_IN_MONTH) {
-                String line = sc.nextLine();
-                String[] tokens = line.split(",");
-                setArrayElement(tokens);   // Matches assignment requirement
-            }
-
-            sc.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + inputFile);
+        while (sc.hasNextLine() && lineNumber < WEEKS_IN_MONTH) {
+            String line = sc.nextLine();
+            String[] tokens = line.split(",");
+            setArrayElement(tokens);
         }
+
+        sc.close();
     }
 
     /**
-     * Calculates the total sales for a week from the String array of daily sales.
-     * Converts each string to double and sums the values.
-     * Adds the total to the weekly sales array and increments lineNumber.
-     * 
-     * @param inArray The array of daily sales as strings
-     * @throws NumberFormatException if any string cannot be converted to a double
+     * Totals a week's sales from String array and stores in weeklyNumber
+     * @param inArray array of daily sales as strings
      */
     private void setArrayElement(String[] inArray) {
         double total = 0;
 
-        // Enhanced for-loop required by assignment
+        // Enhanced for-loop
         for (String s : inArray) {
             total += Double.parseDouble(s);
         }
@@ -79,21 +64,27 @@ public class SalesAnalysis {
     }
 
     /**
-     * Writes the sales report to the console.
-     * Includes weekly totals, average daily sales, total monthly sales,
-     * average weekly sales, and weeks with the highest and lowest sales.
+     * Outputs sales report to console
      */
     public void writeOutput() {
         double totalSales = 0;
-        double minSales = weeklyNumber[0], maxSales = weeklyNumber[0];
-        int minWeek = 1, maxWeek = 1;
+        double minSales = weeklyNumber[0];
+        double maxSales = weeklyNumber[0];
+        int minWeek = 1;
+        int maxWeek = 1;
 
         for (int i = 0; i < weeklyNumber.length; i++) {
             double weekly = weeklyNumber[i];
             totalSales += weekly;
 
-            if (weekly < minSales) { minSales = weekly; minWeek = i + 1; }
-            if (weekly > maxSales) { maxSales = weekly; maxWeek = i + 1; }
+            if (weekly < minSales) {
+                minSales = weekly;
+                minWeek = i + 1;
+            }
+            if (weekly > maxSales) {
+                maxSales = weekly;
+                maxWeek = i + 1;
+            }
 
             System.out.printf("Week%d Info\n", i + 1);
             System.out.printf("Total Sales: $%,.2f\n", weekly);

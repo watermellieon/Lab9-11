@@ -1,24 +1,23 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * SalesAnalysisDemo class prompts the user for a sales data file,
- * verifies the file exists, creates a SalesAnalysis object,
- * processes the file, and outputs the results.
+ * SalesAnalysisDemo prompts the user for a sales data file,
+ * checks if it exists, and runs the SalesAnalysis program.
  * 
- * @author Ellie Russo
- * @version 1.0
- * @since 11/16/2025
+ * Author: Ellie Russo
+ * Version: 1.0
+ * Since: 11/22/2025
  */
 public class SalesAnalysisDemo {
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
         Scanner keyboard = new Scanner(System.in);
         String fileName;
         File file;
 
-        // Ask user for file until a valid one is provided
+        // Prompt user until a valid file is entered
         do {
             System.out.print("Enter the path to the SalesData.txt file: ");
             fileName = keyboard.nextLine();
@@ -30,7 +29,7 @@ public class SalesAnalysisDemo {
 
         } while (!file.exists());
 
-        // Create SalesAnalysis object and process file
+        // Create SalesAnalysis object and run methods
         SalesAnalysis sa = new SalesAnalysis(fileName);
         sa.processFile();
         sa.writeOutput();
