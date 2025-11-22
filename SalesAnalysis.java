@@ -11,7 +11,6 @@ import java.util.Scanner;
  * @version 1.0
  * @since 11/16/2025
  */
-
 public class SalesAnalysis {
 
     // Array to store total sales for each week
@@ -19,6 +18,9 @@ public class SalesAnalysis {
 
     // Input file path containing sales data
     private String inputFile;
+
+    // Tracks which week is being processed
+    private int lineNumber = 0;
 
     // Number of weeks in a month (constant) 
     public static final int WEEKS_IN_MONTH = 4;
@@ -43,14 +45,13 @@ public class SalesAnalysis {
         try {
             File file = new File(inputFile);
             Scanner sc = new Scanner(file);
-            int lineNumber = 0;
 
             while (sc.hasNextLine() && lineNumber < WEEKS_IN_MONTH) {
                 String line = sc.nextLine();
                 String[] tokens = line.split(",");
-                setArrayElement(tokens, lineNumber);
-                lineNumber++;
+                setArrayElement(tokens);   // Matches assignment requirement
             }
+
             sc.close();
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + inputFile);
@@ -60,17 +61,21 @@ public class SalesAnalysis {
     /**
      * Calculates the total sales for a week from the String array of daily sales.
      * Converts each string to double and sums the values.
+     * Adds the total to the weekly sales array and increments lineNumber.
      * 
      * @param inArray The array of daily sales as strings
-     * @param lineNumber The week index in the monthly sales array
      * @throws NumberFormatException if any string cannot be converted to a double
      */
-    private void setArrayElement(String[] inArray, int lineNumber) {
+    private void setArrayElement(String[] inArray) {
         double total = 0;
+
+        // Enhanced for-loop required by assignment
         for (String s : inArray) {
             total += Double.parseDouble(s);
         }
+
         weeklyNumber[lineNumber] = total;
+        lineNumber++;
     }
 
     /**
